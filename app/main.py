@@ -4,6 +4,7 @@ from fastapi import FastAPI, Depends
 from app.api_v1.routers import admin_router
 from app.config import app_config
 from app.core.auth import admin_authenticate
+from api_v1.routers.file_router import router_file
 
 
 def create_app() -> FastAPI:
@@ -17,10 +18,16 @@ def create_app() -> FastAPI:
 
     # Маршруты
     app.include_router(
-        admin_router,
+        admin_router, 
         prefix="/api/admin",
         tags=["admin"],
         dependencies=[Depends(admin_authenticate)],
+    )
+
+    app.include_router(
+        router_file,
+        prefix="/api/file",
+        tags=["file"],
     )
 
     return app
