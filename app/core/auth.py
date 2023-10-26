@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
 
-from app.config import app_config
+from app.config.config import app_config
 from app.const import FORBIDDEN_ERROR
 
 X_ADMIN_API_SECRET = APIKeyHeader(

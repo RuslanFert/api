@@ -1,17 +1,17 @@
-import os
+
 import yaml
 from pathlib import Path
 
 from betterconf import Config, field
 from betterconf.config import AbstractProvider
 
-BASE_DIR = Path(__file__).resolve().parent
+#TODO: в этом месте избавиться от хадкода
+BASE_DIR = Path("etc/local/config.yml").resolve()
 
 
 class YMLProvider(AbstractProvider):
     def __init__(self):
-        env = os.environ.get("ENVIRON", "local").lower()
-        path_to_yml = str(BASE_DIR) + f"\\etc\\{env}\\config.yml"
+        path_to_yml = BASE_DIR
 
         with open(path_to_yml, "r") as f:
             self._settings = yaml.safe_load(f)

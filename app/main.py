@@ -1,10 +1,15 @@
 import uvicorn
+import os
 from fastapi import FastAPI, Depends
 
-from app.api_v1.routers import admin_router
-from app.config import app_config
+from app.api_v1.routers.admin_router import admin_router
+from app.config.config import app_config
 from app.core.auth import admin_authenticate
-from api_v1.routers.file_router import router_file
+from api_v1.routers.file_router import file_router
+from api_v1.routers.httpx_router import httpx_router
+
+from pymongo.mongo_client import MongoClient
+from app.const import MONGODB_URI
 
 
 def create_app() -> FastAPI:
@@ -25,15 +30,22 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(
-        router_file,
+        file_router,
         prefix="/api/file",
         tags=["file"],
+    )
+
+    app.include_router(
+        httpx_router,
+        prefix="/api/test",
+        tags=["get_connect"],
     )
 
     return app
 
 
 app = create_app()
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", reload=False, port=app_config.APP_PORT)
