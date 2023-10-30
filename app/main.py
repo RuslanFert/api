@@ -1,5 +1,5 @@
 import uvicorn
-import os
+import logging
 from fastapi import FastAPI, Depends
 
 from app.api_v1.routers.admin_router import admin_router
@@ -8,8 +8,22 @@ from app.core.auth import admin_authenticate
 from api_v1.routers.file_router import file_router
 from api_v1.routers.httpx_router import httpx_router
 
-from pymongo.mongo_client import MongoClient
-from app.const import MONGODB_URI
+
+logging_level = None
+match app_config.LOGGING_LEVEL:
+    case "INFO": app_config.LOGGING_LEVEL = logging.INFO
+    case "WARNING": app_config.LOGGING_LEVEL = logging.WARNING
+    case "ERROR": app_config.LOGGING_LEVEL = logging.ERROR
+    case "CRITICAL": app_config.LOGGING_LEVEL = logging.CRITICAL
+
+logging.basicConfig(level=logging_level, filename="py_log.log",
+                    format="%(asctime)s - %(levelname)s - %(message)s")
+
+logging.debug("A DEBUG Message")
+logging.info("An INFO")
+logging.warning("A WARNING")
+logging.error("An ERROR")
+logging.critical("A message of CRITICAL severity")
 
 
 def create_app() -> FastAPI:
