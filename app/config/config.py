@@ -11,9 +11,9 @@ BASE_DIR = Path().resolve()
 ENV = os.environ.get("ENV", default="local")
 
 
-class YMLProvider(AbstractProvider):
+class YMLProvider(AbstractProvider):   # для чего наследуемся именно от AbstractProvider - Почитать Абстрактные классы
     def __init__(self):
-        path_to_yml = BASE_DIR.joinpath(f"etc/{ENV}/config.yml")
+        path_to_yml = f"{BASE_DIR}/etc/{ENV}/config.yml"
 
         with open(path_to_yml, "r") as f:
             self._settings = yaml.safe_load(f)

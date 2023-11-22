@@ -1,0 +1,28 @@
+version: '2'  # Шапка
+services:     # Описание всех сервисов(контейнеров) с которыми будем работать
+
+  mongo:    # Имя сервиса (контейнера)
+    image: mongo:7.0-rc   # Используемый образ
+    container_name: db_mongo  # Имя контейнера
+    restart:    # Логика поведение при остановке или перезагрузке контейнера
+      always
+    volumes:    # Значения - место куда будут сохраняться данные полученные при работе сервиса
+      - "/Users/Rinat/PycharmProjects/api/data_base:/data/db:rw"
+    ports:    # Порты для получения доступа к контейнеру
+      - target: 27017
+        published: 27017
+        protocol: tcp
+        mode: host
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "10"
+
+  app:
+    build:
+      context: .
+    container_name: fastapi_app
+    ports:
+      - 8844:8844
+    depends_on:
+      - mongo
